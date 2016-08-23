@@ -9,7 +9,7 @@
 <body>
 <?php
 	$DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
-	require_once($DOCUMENT_ROOT . "/excercise/mancala/template/header_row.php");
+	require_once($DOCUMENT_ROOT . "/template/header_row.php");
 
 ?>
 <!-- content -->

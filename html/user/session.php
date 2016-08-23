@@ -1,6 +1,5 @@
 <?php
-$mylib_path = $_SERVER['DOCUMENT_ROOT'] . '/../includes/mylib_board.php';
-require_once($mylib_path);
+
 
 class UserInfo{
 	

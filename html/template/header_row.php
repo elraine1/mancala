@@ -3,9 +3,9 @@
   <header id="header" class="clear">
     <nav>
       <ul>
-        <li><a href="#">Intro</a></li>
-        <li><a href="#">How to Play</a></li>
-        <li><a href="/excercise/mancala/mancala.php">Game Play</a></li>
+        <li><a href="/intro.php">Intro</a></li>
+        <li><a href="/howtoplay.php">How to Play</a></li>
+        <li><a href="/test.php">Game Play</a></li>
         <li class="last"><a href="#">Contact Us</a></li>
       </ul>
     </nav>
@@ -13,6 +13,7 @@
       <h1><a href="index.php">Mancala</a></h1>
       <h2>123</h2>
     </div>
+	<!--   user search
     <form action="#" method="post">
       <fieldset>
         <legend>Search:</legend>
@@ -20,5 +21,6 @@
         <input type="submit" id="sf_submit" value="submit">
       </fieldset>
     </form>
+	-->
   </header>
 </div>
