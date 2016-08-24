@@ -1,4 +1,22 @@
 <?php 
+	// 초기화
+	function init_cups(){
+		if(!(isset($_SESSION['init']))){
+			
+			$p1_cups = array(4,4,4,4,4,4,0);
+			$p2_cups = array(4,4,4,4,4,4,0);
+			
+			$cups = array($p1_cups, $p2_cups);
+			$_SESSION['cups'] = $cups;
+			$_SESSION['init'] = true;
+			
+			
+//			$_SESSION['turn'] = $p1;
+		}
+	}
+
+
+
 	// 턴 넘기기
 	function turn_over($turn){
 		if($turn == 'p1'){
