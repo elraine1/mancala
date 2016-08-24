@@ -51,6 +51,23 @@
 		}
 	}
 	
-	
+		
+/*
+		if(!((index == -1) && (((player_index+1)%2) == curr_index))){
+
+		// 내 빈 컵에서 턴이 끝났다면(통에 내가 넣은 돌만 있는 경우),  맞은편에 있는 상대방의 컵에 있는 돌을 내 만칼라 통으로 가져간다.
+			var op_index = (player_index+1)%2;			// opponents player 
+			var op_cup_index = length(cups_p1) - index - 2;
+			if((player_index == curr_index) && (cups[player_index][index] == 1) && (cups[op_index][op_cup_index] > 0)){
+				cups[curr_index][6] = parseInt(cups[curr_index][6]) + parseInt(cups[player_index][index]);
+				cups[curr_index][6] = parseInt(cups[curr_index][6]) + parseInt(cups[op_index][op_cup_index]);
+				
+				cups[player_index][index] = 0;
+				cups[op_index][op_cup_index] = 0;			
+			}
+			//$turn = turn_over($turn);
+		}
+*/	
+
 	
 ?>

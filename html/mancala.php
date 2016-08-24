@@ -76,25 +76,32 @@
 			if(index == 6){			//
 				
 				if(curr_index == player_index){
-					var cup = document.getElementById('p'+(curr_index+1)+index);
-
+					var curr_cup = document.getElementById('p'+(curr_index+1)+index);
+					curr_cup.value = parseInt(curr_cup.value) + 1;
 					stone--;
-					cup.value = parseInt(cup.value) + 1;
 				}
 				curr_index = parseInt(curr_index + 1) % 2;
 				index = -1;
 				
 			} else{
 				
-				var cup = document.getElementById('p'+(curr_index+1)+index);
-				
+				var curr_cup = document.getElementById('p'+(curr_index+1)+index);
+				curr_cup.value = parseInt(curr_cup.value) + 1;
 				stone--;
-				cup.value = parseInt(cup.value) + 1;
 			}
-			//alert("player:" + (curr_index+1) + " cup_index: " + index + " stone: " + cup.value);
+			//alert("player:" + (curr_index+1) + " cup_index: " + index + " stone: " + curr_cup.value);
 		}
 	
-		
+		// 1. 타이머.
+		// 2. 턴.
+		// 3. 게임 셋.
+
+		if((index == -1) && (((player_index+1)%2) == curr_index)){
+			
+			alert('free turn!');
+			
+		}
+	
 	}
 
 
