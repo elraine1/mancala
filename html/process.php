@@ -210,8 +210,8 @@
 	if(is_gameset($cups)){
 		$b_gameset = true;
 		
-		$cups[0][6] = array_sum(array_slice($cups[0], 0, 6));
-		$cups[1][6] = array_sum(array_slice($cups[1], 0, 6));
+		$cups[0][6] += array_sum(array_slice($cups[0], 0, 6));
+		$cups[1][6] += array_sum(array_slice($cups[1], 0, 6));
 		
 		for($i=0; $i<6; $i++){
 			$cups[0][$i] = 0;

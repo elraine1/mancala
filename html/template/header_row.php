@@ -5,8 +5,8 @@
       <ul>
         <li><a href="/intro.php">Intro</a></li>
         <li><a href="/howtoplay.php">How to Play</a></li>
-        <li><a href="/test.php">Game Play</a></li>
-        <li class="last"><a href="/mancala.php?turn=p2&cup_index=6">Contact Us</a></li>
+        <li><a href="/mancala.php?turn=p2&cup_index=6">Game Play</a></li>
+        <li class="last"><a href="/test.php">Contact Us</a></li>
       </ul>
     </nav>
     <div id="hgroup">

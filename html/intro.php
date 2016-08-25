@@ -16,7 +16,7 @@
 <div class="wrapper row2">
   <div id="container" class="clear">
     <!-- Content -->
-	<h2>INTRODUTION</h2>
+	<h2>INTRODUCTION</h2>
     <div id="homepage">	
 		<img src="images/mancala_intro.png" alt="" width="900px">
 
