@@ -2,82 +2,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<body>
 
-<style type="text/css">
-	#mancala_board {
-		border: 2px solid gray;
-		
-	}
-	
-	.mancala{
-		width: 50px;
-		height: 100px;
-		border-radius: 10px;
-		font-weight: bold;
-		font-size: 15px;
-	}
-	
-	.cups{
-		width: 50px;
-		height: 50px;
-		border-radius: 10px;
-		
-		font-weight: bold;
-		font-size: 15px;
-	}
-	
-	.p2{
-		color: MidnightBlue ;
-	}
-	.p1{
-		color: green;
-	}
-	
-	input[type="button"]:disabled {
-		background: darkgray;
-	}
-	
-</style>
+<?php 
 
-
-
-<h2> - Mancala! - </h2>
-	
-
-<?php
-	require_once ('./user/session.php');
-	start_session();
-
-	$p1_cups = array(4,4,4,4,4,4,0);
-	$p2_cups = array(4,4,4,4,4,4,0);
-	
-	$cups = array($p1_cups, $p2_cups);
-	$_SESSION['cups'] = $cups;
-		
-
+//$mylib_path = $_SERVER['DOCUMENT_ROOT'] . '/../includes/mylib_mancala.php';
+//require_once($mylib_path);
 ?>
 
-	<h3>Offline Mode</h3>
+login test
+<form action="/user/login.php" method="POST">
+	<fieldset>
+		<legend>로그인창</legend>
+		username: <input type="text" name="username"><br>
+		password: <input type="password" name="hash"><br>
+		<input type="submit" value="로그인">
+	</fieldset>
+</form>
 
-	<table id="mancala_board">
-	<tr>
-		<?php
-			printf("<td rowspan='2'><input type='button' value='%d' class='mancala p2' disabled></td>", $cups[1][6]);
-			for($i = 5; $i >= 0 ; $i--){
-				printf("<td><a href='process.php?turn=p2&cup_index=%d'><input type='button' class='cups p2' value='%d'></a></td>", $i, $cups[1][$i]);
-			}
-			printf("<td rowspan='2'><input type='button' value='%d' class='mancala p1' disabled></td>", $cups[0][6]);
-		?>
-	</tr>
-	<tr>
-		<?php
-			for($i = 0; $i <= 5 ; $i++){
-				printf("<td><a href='process.php?turn=p1&cup_index=%d'><input type='button' class='cups p1' value='%d'></a></td>",$i, $cups[0][$i]);
-			}
-		?>
-	</tr>
-	</table>
+<form action="/user/register.php" method="POST">
+	<fieldset>
+		<legend>회원가입</legend>
+		username: <input type="text" name="username"><br>
+		password: <input type="password" name="hash"><br>
+		password 확인: <input type="password" name="hash_chk"><br>
+		<input type="submit" value="회원가입">
+	</fieldset>
+</form>
+
+
+</body>
 	
-	</body>
+
 </html>
 	

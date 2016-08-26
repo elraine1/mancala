@@ -5,12 +5,55 @@
 <meta charset="iso-8859-1">
 <link rel="stylesheet" href="styles/layout.css" type="text/css">
 <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
+
+<script type="text/javascript" src="./jquery/jquery.js"></script>
+<script type="text/javascript" src="./jquery/jquery-ui.js"></script>
+<script type="text/javascript" src="./jquery/jquery.countdown.js"></script>
+
+<script>
+
+$(document).ready(function(){
+	
+	
+	
+	$("#login_btn").click(function(){
+		var action = $("#login_form").attr("action");
+		var form_data{
+			username: $("#username").val(),
+			password: $("#password").val(),	
+		};
+		
+		$.ajax({
+			
+			type:"POST",
+			url: action,
+			data: form_data,
+			success: function(response){
+				
+				if(response == 'success'){
+					alert('로그인 성공');
+					
+				}else {
+					alert('로그인 실패');
+				}
+				
+			}
+		});
+	});
+});
+
+
+
+
+
+
+</script>
+
 </head>
 <body>
 <?php
 	$DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
 	require_once($DOCUMENT_ROOT . "/template/header_row.php");
-
 ?>
 <!-- content -->
 <div class="wrapper row2">
@@ -19,9 +62,15 @@
     <section id="slider" class="clear">
       <figure><img src="images/mancala.jpg" alt="">
         <figcaption>
-          <h2>Login Box</h2>
-          <p>please login to play game</p>
-          <footer class="more"><a href="#">Read More &raquo;</a></footer>
+			<form action="/user/login.php" id="login_form" method="POST">
+				<fieldset>
+					<legend>로그인창</legend>
+					username: <input type="text" name="username"><br>
+					password: <input type="password" name="password"><br>
+					<input type="button" id="login_btn" value="로그인">
+					<a href="user/register_page.php">아직도 회원이 아니세요?</a>
+				</fieldset>
+			</form>
         </figcaption>
       </figure>
     </section>

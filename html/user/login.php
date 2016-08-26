@@ -4,14 +4,14 @@
 <body>
 <?php
 
-$mylib_path = $_SERVER['DOCUMENT_ROOT'] . '/../includes/mylib_board.php';
+$mylib_path = $_SERVER['DOCUMENT_ROOT'] . '/../includes/mylib_mancala.php';
 require_once($mylib_path);
 require_once ('session.php');
 start_session();
  
-if (isset($_POST['username'], $_POST['hash'])) {
+if (isset($_POST['username'], $_POST['password'])) {
     $username = $_POST['username'];
-    $hash = $_POST['hash']; 
+    $hash = $_POST['password']; 
 	
 //	echo $username . " & " . $hash;
     if (try_to_login($username, $hash) == true) {
