@@ -71,77 +71,13 @@
 <script type="text/javascript" src="./jquery/jquery.js"></script>
 <script type="text/javascript" src="./jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="./jquery/jquery.countdown.js"></script>
-<script>
 
-$(document).ready(function(){
-	/*
-	window.onbeforeunload = function() {
-		return "게임을 마치지 않고 나가면 징계를 먹습니다.";
-	};
-	
-	window.onunload = function() {
-		// 만약 게임중이면 징계먹이기
-		return;
-	};
-	
-	// disable F5 key
-	function disableF5(e) { 
-		if ((e.which || e.keyCode) == 116) {
-			e.preventDefault(); 
-		}
-	}
-	$(document).on("keydown", disableF5);
-	*/
-	
-	
-	$('#timer').countdown(Date.now() + 20000, function(event) { 
-		var remainingSecondsString =  event.strftime('%-S');
-		$(this).text(remainingSecondsString); 
-		if (parseInt(remainingSecondsString) == 0) {
-			$(this).text('Time Over');
-		} else if (parseInt(remainingSecondsString) % 2 == 0) {
-			$(this).css('color', 'red');
-		} else {
-			$(this).css('color', 'blue');
-		}
-	});
-	
-	/*
-	$('#dummy').countdown(Date.now() + 30000, function(event) { 
-		flick();
-	});
-	
-	function flick() {			*/
-		/*
-		var els = document.getElementsByClassName('mytimer');
-		var flash = els[0];		
-		var newNode = flash.cloneNode(true);
-		newNode.id = flash.id + '1';
-		flash.parentNode.replaceChild(newNode, flash);
-		newNode.className = 'timer mytimer';
-		*/
-//		$('#flash').addClass('temp', 900, callBack());
-		/*
-		$('#flash').animate({font-size:200px;
-							     color:red;    }, 1000);
-								 */
-		//flash.style.color = 'red';
-		//setTimeout(function() { flash.style.color = 'black'; }, 100);	
-//	}
-	
-/*	
-	function callBack(element){
-		$('#flash').removeClass('temp');
-	}
-*/
-
-});
-</script>
 
 <script>
-
-	function test(turn, index){
+	var turn = '';					// 턴에 대한 변수를 jquery 에서 사용하기 위하여 전역변수로 선언.
+	function test(myturn, index){
 		
+		turn = myturn;
 		var cups_p1 = document.getElementsByClassName('cups p1');
 		var cups_p2 = document.getElementsByClassName('cups p2');
 	
@@ -153,7 +89,15 @@ $(document).ready(function(){
 		var cups = document.getElementsByClassName(className);
 		
 		var stone = 0;
-		if(turn == 'p2'){
+		if(turn == 'p1'){
+			stone = all_cups[curr_index][index].value;
+			all_cups[curr_index][index].value = 0;
+			
+			for(var i = 0; i < cups_p2.length; i++){
+				cups_p1[i].disabled = false;
+				cups_p2[i].disabled = true;
+			}
+		}else {
 			//// 인덱스가 왼쪽에서부터 0 1 2 3 4 5 6 순서이므로 6 5 4 3 2 1 0 순서로 바꿔줘야 함.
 			var arrSize = cups.length;
 			stone = all_cups[curr_index][arrSize-index-1].value;
@@ -162,16 +106,6 @@ $(document).ready(function(){
 			for(var i = 0; i < cups_p1.length; i++){
 				cups_p1[i].disabled = true;
 				cups_p2[i].disabled = false;
-			}
-			
-			
-		}else {
-			stone = all_cups[curr_index][index].value;
-			all_cups[curr_index][index].value = 0;
-			
-			for(var i = 0; i < cups_p2.length; i++){
-				cups_p1[i].disabled = false;
-				cups_p2[i].disabled = true;
 			}
 		}
 		
@@ -195,12 +129,12 @@ $(document).ready(function(){
 				curr_cup.value = parseInt(curr_cup.value) + 1;
 				stone--;
 			}
-			//alert("player:" + (curr_index+1) + " cup_index: " + index + " stone: " + curr_cup.value);
 		}
 	
 		// 돌을 모두 분배한 뒤, 
 		if( (index == -1) && (((curr_index+1)%2) == player_index) ){		// 만칼라 통(index=6(-1)의 주인이 턴의 주인이라면 => 프리턴
 			alert(turn + "'s Free Turn!");
+			timer_start(turn);
 			/// turn over.
 				
 		}else {																			// 프리턴이 아니라면,
@@ -213,9 +147,7 @@ $(document).ready(function(){
 
 			var curr_cup_id = 'p'+(curr_index+1)+index;
 			var curr_cup = document.getElementById(curr_cup_id);			// 턴 종료된 시점의 컵
-	
-//			alert("curr_cup[" + curr_index + ", " + index + "]: " + curr_cup.value + " / op_cup[" + op_index + ", " + op_cup_index + "]: " + curr_op_cup.value);
-			
+		
 			if((curr_index == player_index) && (curr_cup.value == 1) && (curr_op_cup.value > 0)){
 				alert("[" + op_index + ", " + op_cup_index + "]: " + curr_op_cup.value + " gotcha!!");
 				
@@ -225,8 +157,6 @@ $(document).ready(function(){
 				curr_cup.value = 0;
 				curr_op_cup.value = 0;
 			}
-			
-//			alert(turn + ' turn Over');
 			turnOver(turn);
 		}
 		
@@ -234,14 +164,12 @@ $(document).ready(function(){
 		if(isGameSet() == true){
 			alert('Game Set!');
 		}
-	
-		// 1. 타이머.       
-		
-	
 	}
 	
-	function turnOver(turn){
+	
+	function turnOver(myturn){
 		
+		turn = myturn;
 		var cups_p1 = document.getElementsByClassName('cups p1');
 		var cups_p2 = document.getElementsByClassName('cups p2');
 	
@@ -250,15 +178,36 @@ $(document).ready(function(){
 				cups_p1[i].disabled = true;
 				cups_p2[i].disabled = false;
 			}
-
+ 			turn = 'p2';
 		}else {				// p2의 턴이 종료
 			for(var i = 0; i < cups_p2.length; i++){
 				cups_p1[i].disabled = false;
 				cups_p2[i].disabled = true;
 			}
+			turn = 'p1';
 		}
+		timer_start(turn);
 	}
 
+	function timer_start(myturn){
+		
+		turn = myturn;
+		$('#timer').countdown(Date.now() + 21000, 
+			function(event) { 
+				if(event.type == 'update'){
+					var remainingSecondsString =  event.strftime('%-S');
+					var remainingSeconds = parseInt(remainingSecondsString)-1;
+					$(this).text(remainingSeconds); 
+					if(remainingSeconds < 6){
+						$(this).css('color', 'red');
+					}
+					
+				}else if(event.type == 'finish'){
+					turnOver(turn);
+				}
+			});
+			
+	}
 	
 	function isGameSet(){
 		
@@ -296,7 +245,8 @@ $(document).ready(function(){
 			return false;
 		}
 	}
-
+	
+	
 
 </script>
 
@@ -312,12 +262,9 @@ $(document).ready(function(){
   <div id="container" class="clear">
     <!-- Content -->
     <div id="homepage">	
-
-
-		<h2> - Mancala! - </h2>
-		
+	
 		<div id="timer_div">
-			<span id="timer" class="timer">Timer not started yet</span>
+			<span id="timer" class="timer">Not started yet</span>
 			<!-- <span id="flash" class="timer mytimer">Flash</span>  -->
 			<span id="dummy"></span>
 			<br><br>
@@ -343,7 +290,6 @@ $(document).ready(function(){
 
 		?>
 
-			<h3><?php echo "$turn's Turn!"; ?></h3>
 			<br>
 			<table id="mancala_board">
 			<tr>
