@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
 <head>
-<title>Basic 76</title>
-<meta charset="iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 <link rel="stylesheet" href="styles/layout.css" type="text/css">
+
 <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
 
+<script type="text/javascript" src="./jquery/jquery.js"></script>
+<script type="text/javascript" src="./jquery/jquery-ui.js"></script>
+<script type="text/javascript" src="./jquery/jquery.countdown.js"></script>
 
 <style type="text/css">
 	#mancala_board {
@@ -52,25 +56,47 @@
 		animation-duration: 1.5s; 	
 	}
 
+	.timer_title{
+		margin: 0 auto;
+		text-align: center;
+		font-size: 30px;
+		color: black;
+	}
+	
 	.timer {
 		display: block; 
-		width: 800px; 
+		width: 600px; 
 		margin:0 auto; 
-		margin-top: 100px; 
-		font-size:50px	;
+		margin-top: 10px; 
+		margin-bottom: 20px;
+		font-size:30px	;
 		text-align: center;
 	}
 
 	.temp{
-		font-size:150px;
+		font-size:40px;
 	}
 
+	fieldset { 
+		display: block;
+		margin-left: 2px;
+		margin-right: 2px;
+		padding-top: 0.35em;
+		padding-bottom: 0.625em;
+		padding-left: 0.75em;
+		padding-right: 0.75em;
+		border: 2px solid black;
+		height: 80px;
+	}
+	
+	legend{
+		font-size:30px;
+		color: black;
+		margin: 10px;
+	}
 	
 	
 </style>
-<script type="text/javascript" src="./jquery/jquery.js"></script>
-<script type="text/javascript" src="./jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="./jquery/jquery.countdown.js"></script>
 
 <script>
 	var turn = '';					// 턴에 대한 변수를 jquery 에서 사용하기 위하여 전역변수로 선언.
@@ -166,52 +192,6 @@
 	}
 	
 	
-	function turnOver(myturn){
-		
-		turn = myturn;
-		var cups_p1 = document.getElementsByClassName('cups p1');
-		var cups_p2 = document.getElementsByClassName('cups p2');
-	
-		if(turn == 'p1'){	// p1의 턴이 종료 
-			for(var i = 0; i < cups_p1.length; i++){
-				cups_p1[i].disabled = true;
-				cups_p2[i].disabled = false;
-			}
- 			turn = 'p2';
-		}else {				// p2의 턴이 종료
-			for(var i = 0; i < cups_p2.length; i++){
-				cups_p1[i].disabled = false;
-				cups_p2[i].disabled = true;
-			}
-			turn = 'p1';
-		}
-		timer_start(turn);
-	}
-
-	function timer_start(myturn){
-		
-		turn = myturn;
-		$('#timer').countdown(Date.now() + 21000, 
-			function(event) { 
-				if(event.type == 'update'){
-					var remainingSecondsString =  event.strftime('%-S');
-					var remainingSeconds = parseInt(remainingSecondsString)-1;
-					$(this).text(remainingSeconds); 
-
-					if(remainingSeconds > 5){
-						$(this).css('color', 'black');
-					}else {
-						$(this).css('color', 'red');
-					}
-					
-				}else if(event.type == 'finish'){
-					turnOver(turn);
-					alert(turn + " Turn over!");
-				}
-			});
-			
-	}
-	
 	function isGameSet(){
 		
 		var cups_p1 = document.getElementsByClassName('cups p1');
@@ -249,6 +229,64 @@
 		}
 	}
 	
+	function turnOver(myturn){
+		
+		turn = myturn;
+		var cups_p1 = document.getElementsByClassName('cups p1');
+		var cups_p2 = document.getElementsByClassName('cups p2');
+	
+		if(turn == 'p1'){	// p1의 턴이 종료 
+			for(var i = 0; i < cups_p1.length; i++){
+				cups_p1[i].disabled = true;
+				cups_p2[i].disabled = false;
+			}
+ 			turn = 'p2';
+		}else {				// p2의 턴이 종료
+			for(var i = 0; i < cups_p2.length; i++){
+				cups_p1[i].disabled = false;
+				cups_p2[i].disabled = true;
+			}
+			turn = 'p1';
+		}
+		timer_start(turn);
+	}
+
+	function timer_start(myturn){
+		
+		turn = myturn;
+		$('#timer').countdown(Date.now() + 20500, 
+			function(event) { 
+				if(event.type == 'update'){
+					$(this).removeClass('temp');
+					
+					var remainingSecondsString =  event.strftime('%-S');
+					var remainingSeconds = parseInt(remainingSecondsString)-1;
+					$(this).text(remainingSeconds + " seconds left"); 
+					
+					if(remainingSeconds > 10) {
+						$(this).css('color', 'black');
+					}else if(remainingSeconds > 5) {
+						$(this).css('color', 'orangeRed');
+					}else {
+						$(this).css('color', 'red');
+						flick();
+					}
+					
+				}else if(event.type == 'finish'){
+					turnOver(turn);
+					alert(turn + " Turn over!");
+				}
+			});
+	}
+	
+	
+	function flick() {			
+		$('#timer').addClass('temp', 900, callBack());
+	}
+	
+	function callBack(element){
+		$('#timer').removeClass('temp');
+	}
 	
 
 </script>
@@ -265,34 +303,23 @@
   <div id="container" class="clear">
     <!-- Content -->
     <div id="homepage">	
-	
+		
 		<div id="timer_div">
-			<span id="timer" class="timer">Not started yet</span>
-			<!-- <span id="flash" class="timer mytimer">Flash</span>  -->
-			<span id="dummy"></span>
-			<br><br>
+			<fieldset name="test">
+				<legend> Time left </legend>	
+				<span id="timer" class="timer">Not started yet</span>
+			</fieldset>
 		</div>
 
 
 		<?php
-			require_once ('mancala_lib.php');
-		//	require_once ('./user/session.php');
-		//	start_session();
-
-			init_cups();
-			
 		// 초기화 	
-
-			
-			if($_SERVER['REQUEST_METHOD'] == "GET"){
-				$turn = $_GET['turn'];
-				$cup_index = $_GET['cup_index'];
-			}
-
-			$cups = $_SESSION['cups'];
-
+			$p1_cups = array(4,4,4,4,4,4,0);
+			$p2_cups = array(4,4,4,4,4,4,0);		
+			$cups = array($p1_cups, $p2_cups);
+		
 		?>
-
+			
 			<br>
 			<table id="mancala_board">
 			<tr>
