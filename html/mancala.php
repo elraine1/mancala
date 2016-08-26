@@ -72,7 +72,6 @@
 <script type="text/javascript" src="./jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="./jquery/jquery.countdown.js"></script>
 
-
 <script>
 	var turn = '';					// 턴에 대한 변수를 jquery 에서 사용하기 위하여 전역변수로 선언.
 	function test(myturn, index){
@@ -198,12 +197,16 @@
 					var remainingSecondsString =  event.strftime('%-S');
 					var remainingSeconds = parseInt(remainingSecondsString)-1;
 					$(this).text(remainingSeconds); 
-					if(remainingSeconds < 6){
+
+					if(remainingSeconds > 5){
+						$(this).css('color', 'black');
+					}else {
 						$(this).css('color', 'red');
 					}
 					
 				}else if(event.type == 'finish'){
 					turnOver(turn);
+					alert(turn + " Turn over!");
 				}
 			});
 			
