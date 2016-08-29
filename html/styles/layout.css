@@ -73,7 +73,7 @@ input, textarea, select{font-size:12px; font-family:Georgia,"Times New Roman",Ti
 #header{}
 
 #header #hgroup{float:left; padding:20px 0;}
-#header #hgroup h1, #header #hgroup h2{font-weight:normal; text-transform:none;}
+#header #hgroup h1, #header #hgroup h2{font-weight:normal; text-trfnsform:none;}
 #header #hgroup h1{font-size:36px;}
 #header #hgroup h2{font-size:13px;}
 

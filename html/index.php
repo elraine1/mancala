@@ -6,12 +6,74 @@
 <link rel="stylesheet" href="styles/layout.css" type="text/css">
 <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
 
+<style type="text/css">
+	#row1_left_div{
+		display:inline-block;
+		float:left;
+		
+	}
+	
+	#mancala_img{
+		 width: 600px;
+		 height: 300px;
+		 margin: 20px;
+	}
+	
+	#login_container{
+		margin: 0 auto;
+		margin-top: 20px;
+		margin-left: 20px;
+		width: 300px;
+		height: 300px;
+		background-color: #333333;
+		display: inline-block;
+		float:left;
+		align:center;
+		
+		border-radius: 20px;
+	}
+	
+	#login_box{
+		margin: 20px;
+	}
+	
+	#inner_container_row1 a{
+		outline:none; 
+		text-decoration:none;
+		background-color: #333333;
+		
+		
+	}
+	
+	
+	fieldset { 
+		display: block;
+		margin-left: 2px;
+		margin-right: 2px;
+		padding-top: 0.35em;
+		padding-bottom: 0.625em;
+		padding-left: 0.75em;
+		padding-right: 0.75em;
+		border: 2px solid #222222;
+		height: 90px;
+		
+		border-radius: 10px;
+	}
+	
+</style>
+
+
+
+
 <script type="text/javascript" src="./jquery/jquery.js"></script>
 <script type="text/javascript" src="./jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="./jquery/jquery.countdown.js"></script>
 
-<script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 
+
+<script>
+/*
 $(document).ready(function(){
 	
 	
@@ -42,38 +104,61 @@ $(document).ready(function(){
 	});
 });
 
-
-
-
-
-
+*/
 </script>
+
+
 
 </head>
 <body>
 <?php
 	$DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
-	require_once($DOCUMENT_ROOT . "/template/header_row.php");
+	require_once($DOCUMENT_ROOT . "/template/header_row.php");  
 ?>
+
 <!-- content -->
 <div class="wrapper row2">
   <div id="container" class="clear">
-    <!-- Slider -->
-    <section id="slider" class="clear">
-      <figure><img src="images/mancala.jpg" alt="">
-        <figcaption>
-			<form action="/user/login.php" id="login_form" method="POST">
-				<fieldset>
-					<legend>로그인창</legend>
-					username: <input type="text" name="username"><br>
-					password: <input type="password" name="password"><br>
-					<input type="button" id="login_btn" value="로그인">
-					<a href="user/register_page.php">아직도 회원이 아니세요?</a>
-				</fieldset>
-			</form>
-        </figcaption>
-      </figure>
-    </section>
+
+	<div id="inner_container_row1">
+		<div id="row1_left_div">
+			<img id="mancala_img" src="images/mancala.jpg" alt="">	
+		</div>
+
+		<div id="login_container">
+		
+			<?php 
+				if(isset($_SESSION['nickname'])){
+					printf("<div id='login_box'>");
+					printf("%s 님 환영합니다!", $_SESSION['nickname']);
+					printf("<input type='button' value='로그아웃'>");
+					printf("</div>");		
+				}else {
+			?>
+		
+			<div id="login_box">
+				<form action="/user/login.php" id="login_form" method="POST">
+					<fieldset>
+						<legend>Login</legend>
+						<table>
+						<tr><td>username: </td><td> <input type="text" name="username"></td></tr>
+						<tr><td>password: </td><td> <input type="password" name="password"></td></tr>
+						<tr><td colspan="2"><input type="button" id="login_btn" value="로그인"> <a href="user/register_page.php"> 아직도 회원이 아니세요? </a></td></tr>
+						</table>
+					</fieldset>
+				</form>
+				<br>
+				<!-- 네이버아이디로로그인 버튼 노출 영역 -->
+				<div id="naver_id_login"></div>
+				<!-- //네이버아이디로로그인 버튼 노출 영역 -->
+			</div>
+			
+			<?php
+				}
+			?>
+		</div>
+	</div>
+	
     <!-- Content -->
     <div id="homepage">
       <!-- ########################################################################################## -->
@@ -131,3 +216,35 @@ $(document).ready(function(){
 </div>
 </body>
 </html>
+
+
+
+
+<!-- 네이버아디디로로그인 초기화 Script -->
+<script type="text/javascript">
+	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://127.0.0.1:8083/");
+	var state = naver_id_login.getUniqState();
+	naver_id_login.setButton("white", 3,40);
+	naver_id_login.setDomain("mancala.phplove.net");
+	naver_id_login.setState(state);
+	naver_id_login.setPopup();
+	naver_id_login.init_naver_id_login();
+	
+<!-- // 네이버아이디로로그인 초기화 Script -->
+
+
+<!-- 네이버아디디로로그인 Callback페이지 처리 Script -->
+
+	// 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+	function naverSignInCallback() {
+		// naver_id_login.getProfileData('프로필항목명');
+		// 프로필 항목은 개발가이드를 참고하시기 바랍니다.
+		alert(naver_id_login.getProfileData('email'));
+		alert(naver_id_login.getProfileData('nickname'));
+		alert(naver_id_login.getProfileData('age'));
+	}
+
+	// 네이버 사용자 프로필 조회
+	naver_id_login.get_naver_userprofile("naverSignInCallback()");
+</script>
+
