@@ -222,7 +222,8 @@ $(document).ready(function(){
 
 <!-- 네이버아디디로로그인 초기화 Script -->
 <script type="text/javascript">
-	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://127.0.0.1:8083/");
+//	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://127.0.0.1:8083/");
+	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://mancala.phplove.net");
 	var state = naver_id_login.getUniqState();
 	naver_id_login.setButton("white", 3,40);
 	naver_id_login.setDomain("mancala.phplove.net");
