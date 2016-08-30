@@ -3,10 +3,10 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="/css/mystyle.css">
-<!-- 
+
 <script language="javascript" src="check_form.js"></script>
 <script language="javascript" src="sha512.js"></script>
--->
+
 </head>
 <body>
 <div class="content">

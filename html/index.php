@@ -64,6 +64,8 @@
 
 
 
+<!-- <script language="javascript" src="check_form.js"></script> -->
+<script language="javascript" src="/user/sha512.js"></script>
 
 <script type="text/javascript" src="./jquery/jquery.js"></script>
 <script type="text/javascript" src="./jquery/jquery-ui.js"></script>
@@ -71,40 +73,83 @@
 
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 
+<script>
+
+function checkLoginForm(form, id, password) { 
+	
+    if (id.value == '' || 
+          password.value == '' ) {
+        alert('아이디와 비밀번호는 빈칸 안됨');
+        return false;
+    }
+	 
+    // 해쉬 값을 포함할 요소 생성
+    var hash = hex_sha512(password.value);
+	return hash;
+}
+
+</script>
 
 <script>
-/*
+
 $(document).ready(function(){
 	
 	
 	
 	$("#login_btn").click(function(){
+		var hash = checkLoginForm(this.form, this.form.username, this.form.password);
 		var action = $("#login_form").attr("action");
-		var form_data{
-			username: $("#username").val(),
-			password: $("#password").val(),	
+		var form_data = {
+			"username": $("#username").val(),
+			"password": hash,	
 		};
 		
 		$.ajax({
 			
-			type:"POST",
+			type: "POST",
 			url: action,
 			data: form_data,
 			success: function(response){
 				
+				alert(response);
 				if(response == 'success'){
-					alert('로그인 성공');
-					
+				//	alert(response + '로그인 성공');
+					alert('야호');
 				}else {
-					alert('로그인 실패');
+					alert('아이디 또는 비밀번호가 일치하지 않습니다.');
 				}
-				
 			}
 		});
 	});
+	
+	$("#logout_btn").click(function(){
+		var hash = checkLoginForm(this.form, this.form.username, this.form.password);
+		var action = $("#login_form").attr("action");
+		var form_data = {
+			"username": $("#username").val(),
+			"password": hash,	
+		};
+		
+		$.ajax({
+			
+			type: "POST",
+			url: action,
+			data: form_data,
+			success: function(response){
+				
+				alert(response);
+				if(response == 'success'){
+				//	alert(response + '로그인 성공');
+					alert('야호');
+				}else {
+					alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+				}
+			}
+		});
+	});
+	
 });
 
-*/
 </script>
 
 
@@ -112,8 +157,16 @@ $(document).ready(function(){
 </head>
 <body>
 <?php
+
+
 	$DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
 	require_once($DOCUMENT_ROOT . "/template/header_row.php");  
+	require_once('user/session.php');
+	start_session();
+
+	echo $_SESSION['login_status'] . '<br>';
+	echo $_SESSION['userinfo']->username . '<br>';
+	
 ?>
 
 <!-- content -->
@@ -126,34 +179,11 @@ $(document).ready(function(){
 		</div>
 
 		<div id="login_container">
-		
 			<?php 
-				if(isset($_SESSION['nickname'])){
-					printf("<div id='login_box'>");
-					printf("%s 님 환영합니다!", $_SESSION['nickname']);
-					printf("<input type='button' value='로그아웃'>");
-					printf("</div>");		
+				if(isset($_SESSION['login_status']) && ($_SESSION['login_status'] == true)){
+					require_once('loginbox_login_ok.php');
 				}else {
-			?>
-		
-			<div id="login_box">
-				<form action="/user/login.php" id="login_form" method="POST">
-					<fieldset>
-						<legend>Login</legend>
-						<table>
-						<tr><td>username: </td><td> <input type="text" name="username"></td></tr>
-						<tr><td>password: </td><td> <input type="password" name="password"></td></tr>
-						<tr><td colspan="2"><input type="button" id="login_btn" value="로그인"> <a href="user/register_page.php"> 아직도 회원이 아니세요? </a></td></tr>
-						</table>
-					</fieldset>
-				</form>
-				<br>
-				<!-- 네이버아이디로로그인 버튼 노출 영역 -->
-				<div id="naver_id_login"></div>
-				<!-- //네이버아이디로로그인 버튼 노출 영역 -->
-			</div>
-			
-			<?php
+					require_once('loginbox_login_no.php');
 				}
 			?>
 		</div>
@@ -222,8 +252,8 @@ $(document).ready(function(){
 
 <!-- 네이버아디디로로그인 초기화 Script -->
 <script type="text/javascript">
-//	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://127.0.0.1:8083/");
-	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://mancala.phplove.net");
+//	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://mancala.phplove.net");
+	var naver_id_login = new naver_id_login("kwh_3pTmE1e7s3ktK1Oy", "http://127.0.0.1:8083/");
 	var state = naver_id_login.getUniqState();
 	naver_id_login.setButton("white", 3,40);
 	naver_id_login.setDomain("mancala.phplove.net");

@@ -3,22 +3,33 @@
 
 class UserInfo{
 	
-	public $user_id; 
 	public $username;
-	public $nickname;
-	public $email;
-	public $join_date;
-	
 	// 생성자
-	public function __construct($user_id, $username, $nickname, $email, $join_date) {
-		$this->user_id = $user_id;
+	public function __construct($username) {
 		$this->username = $username;
-		$this->nickname = $nickname;
-		$this->email = $email;
-		$this->join_date = $join_date;
 	}
 	
 }
+
+
+// 사용자 정보를 세션에 등록하는 함수.
+function get_user_info($username){
+	
+	$conn = get_sqlserver_conn();
+	$stmt = mysqli_prepare($conn, "SELECT * FROM user_account WHERE username = ?");
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt);
+	$result = mysqli_stmt_get_result($stmt);
+	$row = mysqli_fetch_assoc($result);
+	
+	$userinfo = new UserInfo($row['username']);
+
+	mysqli_free_result($result);
+	mysqli_close($conn);	
+
+	return $userinfo;
+}
+
 
 // 하나의 페이지에서 한 번만 호출되어야 한다.
 function start_session() {
@@ -56,43 +67,16 @@ function destroy_session() {
 function try_to_login($username, $password) {
 	
 	if (check_user_account($username, $password)) {
-		
-		$userinfo = get_user_info($username, $password);
-		
+		$userinfo = get_user_info($username);
 		$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 		$_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-		$_SESSION['user_id'] = $userinfo->user_id;	
-		$_SESSION['username'] = $userinfo->username;
-		$_SESSION['nickname'] = $userinfo->nickname;
-		$_SESSION['email'] = $userinfo->email;
-		$_SESSION['join_date'] = $userinfo->join_date;
+		$_SESSION['userinfo'] = $userinfo;
 		$_SESSION['login_status'] = true;
-		
 		return true;
-		
 	} else {
 		return false;
 	}
 }
-
-// 사용자 정보를 세션에 등록하는 함수.
-function get_user_info($username, $password){
-	
-	$conn = get_sqlserver_conn();
-	$stmt = mysqli_prepare($conn, "SELECT * FROM user_account WHERE username = ?");
-	mysqli_stmt_bind_param($stmt, "s", $username);
-	mysqli_stmt_execute($stmt);
-	$result = mysqli_stmt_get_result($stmt);
-	$row = mysqli_fetch_assoc($result);
-	
-	$userinfo = new UserInfo($row['user_id'], $username, $row['nickname'], $row['email'], $row['join_date']);
-
-	mysqli_free_result($result);
-	mysqli_close($conn);	
-
-	return $userinfo;
-}
-
 
 
 function check_user_account($username, $password) {
