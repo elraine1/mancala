@@ -88,6 +88,7 @@ function checkLoginForm(form, id, password) {
 	return hash;
 }
 
+
 </script>
 
 <script>
@@ -111,12 +112,13 @@ $(document).ready(function(){
 			data: form_data,
 			success: function(response){
 				
-				alert(response);
+				
 				if(response == 'success'){
 				//	alert(response + '로그인 성공');
 					alert('야호');
+					$("#login_container").load("loginbox_login_ok.php");
 				}else {
-					alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+					alert(response + ' 아이디 또는 비밀번호가 일치하지 않습니다.');
 				}
 			}
 		});
@@ -131,7 +133,6 @@ $(document).ready(function(){
 		};
 		
 		$.ajax({
-			
 			type: "POST",
 			url: action,
 			data: form_data,
@@ -160,12 +161,13 @@ $(document).ready(function(){
 
 
 	$DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
-	require_once($DOCUMENT_ROOT . "/template/header_row.php");  
 	require_once('user/session.php');
 	start_session();
+	
+	require_once($DOCUMENT_ROOT . "/template/header_row.php");  
 
-	echo $_SESSION['login_status'] . '<br>';
-	echo $_SESSION['userinfo']->username . '<br>';
+//	echo $_SESSION['login_status'] . '<br>';
+//	echo $_SESSION['userinfo']->username . '<br>';
 	
 ?>
 
@@ -181,6 +183,7 @@ $(document).ready(function(){
 		<div id="login_container">
 			<?php 
 				if(isset($_SESSION['login_status']) && ($_SESSION['login_status'] == true)){
+					$userinfo = $_SESSION['userinfo'];
 					require_once('loginbox_login_ok.php');
 				}else {
 					require_once('loginbox_login_no.php');
@@ -278,4 +281,5 @@ $(document).ready(function(){
 	// 네이버 사용자 프로필 조회
 	naver_id_login.get_naver_userprofile("naverSignInCallback()");
 </script>
+
 

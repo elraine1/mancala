@@ -113,8 +113,8 @@ function check_login() {
 function try_to_logout() {
 	if (check_login()) {
 		$_SESSION['login_status'] = false;
-	} else {
-	}
+		$_SESSION['userinfo'] = null;
+	} 
 }
 
  ?>
